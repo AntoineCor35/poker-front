@@ -10,30 +10,34 @@ const Profile = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [profileData, setProfileData] = useState(null);
+  const [profileLoaded, setProfileLoaded] = useState(false);
 
   useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        
-        const data = await authService.getProfile();
-        setProfileData(data);
-        
-        // Mettre à jour les données utilisateur dans le contexte global
-        setUser(prevUser => ({ ...prevUser, ...data }));
-      } catch (err) {
-        console.error('Erreur lors de la récupération du profil:', err);
-        setError('Impossible de charger les données du profil.');
-      } finally {
-        setLoading(false);
-      }
-    };
+    // Éviter de refaire un appel si le profil a déjà été chargé
+    if (user && !profileLoaded && !loading) {
+      const fetchProfile = async () => {
+        try {
+          setLoading(true);
+          setError(null);
+          
+          const data = await authService.getProfile();
+          setProfileData(data);
+          setProfileLoaded(true);
+          
+          // Mettre à jour les données utilisateur dans le contexte global
+          // sans déclencher une nouvelle exécution de l'effet
+          setUser(prevUser => ({ ...prevUser, ...data }));
+        } catch (err) {
+          console.error('Erreur lors de la récupération du profil:', err);
+          setError('Impossible de charger les données du profil.');
+        } finally {
+          setLoading(false);
+        }
+      };
 
-    if (user) {
       fetchProfile();
     }
-  }, [user, setUser]);
+  }, [user, profileLoaded, loading, setUser]); // Ajouter profileLoaded comme dépendance
 
   if (loading) {
     return (
@@ -49,7 +53,10 @@ const Profile = () => {
       <div className="error-container">
         <h3>Erreur</h3>
         <p>{error}</p>
-        <button onClick={() => window.location.reload()}>Réessayer</button>
+        <button onClick={() => {
+          setProfileLoaded(false); // Réinitialiser pour permettre un nouvel essai
+          window.location.reload();
+        }}>Réessayer</button>
       </div>
     );
   }
