@@ -1,0 +1,19 @@
+version: "3.8"
+
+services:
+  frontend:
+    container_name: poker-frontend-prod
+    build:
+      context: .
+      target: production
+    ports:
+      - "80:80"
+    environment:
+      - REACT_APP_API_URL=http://localhost:3001
+    networks:
+      - poker-network
+    restart: unless-stopped
+
+networks:
+  poker-network:
+    external: true

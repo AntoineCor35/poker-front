@@ -39,6 +39,60 @@ Instead, it will copy all the configuration files and the transitive dependencie
 
 You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
+## Docker Setup
+
+This project is configured to run with Docker, allowing for both development and production environments.
+
+### Prerequisites
+
+- Docker and Docker Compose installed on your machine
+- The backend API should be running in a Docker container connected to the 'poker-network' network
+
+### Docker Commands
+
+#### Development Mode
+
+```bash
+# Start the development server with hot-reload
+npm run docker:dev
+```
+
+This will:
+
+- Build and run the React app in development mode
+- Mount your local files to enable hot-reloading
+- Connect to the backend API via the Docker network
+- Expose the app on http://localhost:3000
+
+#### Production Mode
+
+```bash
+# Build the production image
+npm run docker:build
+
+# Start the production container
+npm run docker:prod
+```
+
+This will:
+
+- Build an optimized production version of the app
+- Serve it using Nginx
+- Configure API proxying
+- Expose the app on port 80 (http://localhost)
+
+### Container Structure
+
+- Development: Uses Node.js Alpine to run the development server
+- Production: Builds the app with Node.js and serves it with Nginx
+- The Nginx configuration handles React routing and proxies API requests to the backend
+
+### Environment Configuration
+
+- Development: Uses variables from `.env.development`
+- Production: Uses variables baked into the image during build
+- API URL is configured to connect to the backend service
+
 ## Learn More
 
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
