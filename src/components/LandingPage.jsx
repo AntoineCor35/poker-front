@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { PixelButton, PixelCard, PixelChip, PixelContainer, PixelAnimation } from './ui';
+import useAuth from '../auth/hooks/useAuth';
 
 // Composant pour les icônes chevron
 const ChevronRight = () => (
@@ -36,6 +37,7 @@ const PixelArt = ({ className, children, style }) => (
 const LandingPage = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [animationFrame, setAnimationFrame] = useState(0);
+  const { isAuthenticated, user, logout } = useAuth();
 
   // Animation simple pour les éléments pixel art
   useEffect(() => {
@@ -73,14 +75,28 @@ const LandingPage = () => {
             </div>
 
             <div className="hidden md:flex space-x-4">
-              <Link to="/login">
-                <PixelButton variant="outline" size="sm">
-                  LOGIN
-                </PixelButton>
-              </Link>
-              <Link to="/register">
-                <PixelButton size="sm">SIGN UP</PixelButton>
-              </Link>
+              {isAuthenticated ? (
+                <>
+                  <span className="flex items-center gap-2 text-poker-gold">
+                    {user?.pseudo} <PixelChip value={user?.bank || 0} className="w-8 h-8" />
+                  </span>
+                  <Link to="/profile">
+                    <PixelButton size="sm">Profil</PixelButton>
+                  </Link>
+                  <PixelButton size="sm" variant="outline" onClick={logout}>Logout</PixelButton>
+                </>
+              ) : (
+                <>
+                  <Link to="/login">
+                    <PixelButton variant="outline" size="sm">
+                      LOGIN
+                    </PixelButton>
+                  </Link>
+                  <Link to="/register">
+                    <PixelButton size="sm">SIGN UP</PixelButton>
+                  </Link>
+                </>
+              )}
             </div>
 
             <button className="md:hidden" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
@@ -103,16 +119,30 @@ const LandingPage = () => {
                 JOIN
               </a>
               <div className="flex flex-col space-y-2 pt-2 border-t-4 border-black pixel-borders">
-                <Link to="/login">
-                  <PixelButton variant="outline" className="w-full">
-                    LOGIN
-                  </PixelButton>
-                </Link>
-                <Link to="/register">
-                  <PixelButton className="w-full">
-                    SIGN UP
-                  </PixelButton>
-                </Link>
+                {isAuthenticated ? (
+                  <>
+                    <span className="flex items-center gap-2 text-poker-gold">
+                      {user?.pseudo} <PixelChip value={user?.bank || 0} className="w-8 h-8" />
+                    </span>
+                    <Link to="/profile">
+                      <PixelButton className="w-full">Profil</PixelButton>
+                    </Link>
+                    <PixelButton className="w-full" variant="outline" onClick={() => { logout(); setMobileMenuOpen(false); }}>Logout</PixelButton>
+                  </>
+                ) : (
+                  <>
+                    <Link to="/login">
+                      <PixelButton variant="outline" className="w-full">
+                        LOGIN
+                      </PixelButton>
+                    </Link>
+                    <Link to="/register">
+                      <PixelButton className="w-full">
+                        SIGN UP
+                      </PixelButton>
+                    </Link>
+                  </>
+                )}
               </div>
             </div>
           </div>
@@ -412,23 +442,38 @@ const LandingPage = () => {
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
-                <Link to="/register">
-                  <PixelButton
-                    size="lg"
-                    className="w-full sm:w-auto"
-                  >
-                    CREATE ACCOUNT
-                  </PixelButton>
-                </Link>
-                <Link to="/login">
-                  <PixelButton
-                    size="lg"
-                    variant="outline"
-                    className="w-full sm:w-auto"
-                  >
-                    LOGIN
-                  </PixelButton>
-                </Link>
+                {isAuthenticated ? (
+                  <>
+                    <Link to="/profile">
+                      <PixelButton size="lg" className="w-full sm:w-auto">
+                        Voir mon profil
+                      </PixelButton>
+                    </Link>
+                    <PixelButton size="lg" variant="outline" className="w-full sm:w-auto" onClick={logout}>
+                      Déconnexion
+                    </PixelButton>
+                  </>
+                ) : (
+                  <>
+                    <Link to="/register">
+                      <PixelButton
+                        size="lg"
+                        className="w-full sm:w-auto"
+                      >
+                        CREATE ACCOUNT
+                      </PixelButton>
+                    </Link>
+                    <Link to="/login">
+                      <PixelButton
+                        size="lg"
+                        variant="outline"
+                        className="w-full sm:w-auto"
+                      >
+                        LOGIN
+                      </PixelButton>
+                    </Link>
+                  </>
+                )}
               </div>
             </div>
           </PixelContainer>
