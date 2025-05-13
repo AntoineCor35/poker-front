@@ -4,6 +4,15 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+// Ne pas utiliser next/font dans un projet React standard
+// import { Press_Start_2P } from 'next/font/google';
+
+// const pixelFont = Press_Start_2P({
+//   weight: "400",
+//   subsets: ["latin"],
+//   variable: "--font-pixel",
+// });
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>

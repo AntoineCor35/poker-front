@@ -13,29 +13,61 @@ import Profile from './auth/components/Profile';
 import PrivateRoute from './auth/components/PrivateRoute';
 import Navbar from './auth/components/Navbar';
 import Home from './Home'; // Créer ce composant plus tard
+import LandingPage from './components/LandingPage';
+
+// Import pixel art components
+import { PixelContainer } from './components/ui';
 
 function App() {
   return (
     <AuthProvider>
       <Router>
-        <div className="App">
-          <Navbar />
-          <div className="content">
-            <Routes>
-              {/* Routes publiques */}
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-              
-              {/* Routes protégées */}
-              <Route element={<PrivateRoute />}>
-                <Route path="/profile" element={<Profile />} />
-                {/* Ajoutez d'autres routes protégées ici */}
-              </Route>
-              
-              {/* Route d'accueil */}
-              <Route path="/" element={<Home />} />
-            </Routes>
-          </div>
+        <div className="App font-pixel bg-poker-green-dark min-h-screen">
+          <Routes>
+            {/* Landing Page */}
+            <Route path="/" element={<LandingPage />} />
+            
+            {/* Routes avec Navbar et Container */}
+            <Route path="/app" element={
+              <>
+                <Navbar />
+                <PixelContainer className="content max-w-5xl mx-auto mt-8">
+                  <Home />
+                </PixelContainer>
+              </>
+            } />
+            
+            {/* Routes publiques */}
+            <Route path="/login" element={
+              <>
+                <Navbar />
+                <PixelContainer className="content max-w-5xl mx-auto mt-8">
+                  <Login />
+                </PixelContainer>
+              </>
+            } />
+            <Route path="/register" element={
+              <>
+                <Navbar />
+                <PixelContainer className="content max-w-5xl mx-auto mt-8">
+                  <Register />
+                </PixelContainer>
+              </>
+            } />
+            
+            {/* Routes protégées */}
+            <Route element={<PrivateRoute />}>
+              <Route path="/profile" element={
+                <>
+                  <Navbar />
+                  <PixelContainer className="content max-w-5xl mx-auto mt-8">
+                    <Profile />
+                  </PixelContainer>
+                </>
+              } />
+              {/* Ajoutez d'autres routes protégées ici */}
+            </Route>
+          </Routes>
         </div>
       </Router>
     </AuthProvider>

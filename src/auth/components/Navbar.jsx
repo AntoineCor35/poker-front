@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
+import { PixelButton, PixelChip } from '../../components/ui';
 
 /**
  * Barre de navigation qui affiche différents liens selon l'état d'authentification
@@ -15,38 +16,48 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="navbar">
-      <div className="navbar-brand">
-        <Link to="/">Poker App</Link>
-      </div>
-      
-      <div className="navbar-menu">
-        <div className="navbar-start">
-          <Link to="/" className="navbar-item">Accueil</Link>
-          {isAuthenticated && (
-            <>
-              <Link to="/tables" className="navbar-item">Tables</Link>
-              <Link to="/profile" className="navbar-item">Profil</Link>
-            </>
-          )}
+    <nav className="bg-poker-black border-b-4 border-poker-gold py-4 font-pixel">
+      <div className="container mx-auto px-4 flex flex-col sm:flex-row items-center justify-between">
+        <div className="navbar-brand mb-4 sm:mb-0">
+          <Link to="/" className="text-xl text-poker-gold uppercase">Poker App</Link>
         </div>
         
-        <div className="navbar-end">
-          {isAuthenticated ? (
-            <div className="navbar-auth">
-              <span className="navbar-username">
-                {user?.pseudo}
-              </span>
-              <button onClick={handleLogout} className="logout-button">
-                Déconnexion
-              </button>
-            </div>
-          ) : (
-            <div className="navbar-auth">
-              <Link to="/login" className="navbar-item">Connexion</Link>
-              <Link to="/register" className="navbar-item">Inscription</Link>
-            </div>
-          )}
+        <div className="flex flex-col sm:flex-row w-full sm:w-auto items-center gap-4">
+          <div className="navbar-start flex gap-4">
+            <Link to="/" className="px-2 text-white hover:text-poker-gold">Accueil</Link>
+            {isAuthenticated && (
+              <>
+                <Link to="/tables" className="px-2 text-white hover:text-poker-gold">Tables</Link>
+                <Link to="/profile" className="px-2 text-white hover:text-poker-gold">Profil</Link>
+              </>
+            )}
+          </div>
+          
+          <div className="navbar-end flex items-center gap-4 mt-4 sm:mt-0">
+            {isAuthenticated ? (
+              <div className="flex items-center gap-4">
+                <div className="flex items-center gap-2">
+                  <span className="text-white">{user?.pseudo}</span>
+                  <PixelChip value={user?.bank || 0} className="w-8 h-8" />
+                </div>
+                <PixelButton 
+                  onClick={handleLogout} 
+                  className="text-sm px-3 py-1"
+                >
+                  Logout
+                </PixelButton>
+              </div>
+            ) : (
+              <div className="flex gap-4">
+                <Link to="/login">
+                  <PixelButton className="text-sm px-3 py-1">Connexion</PixelButton>
+                </Link>
+                <Link to="/register">
+                  <PixelButton className="text-sm px-3 py-1 bg-poker-green hover:bg-green-700">Inscription</PixelButton>
+                </Link>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </nav>
