@@ -63,4 +63,59 @@ describe('Register Component', () => {
       expect(screen.getByText(/inscription réussie/i)).toBeInTheDocument();
     });
   });
+
+  const setup = () => {
+    render(
+      <BrowserRouter>
+        <Register />
+      </BrowserRouter>
+    );
+    return {
+      pseudoInput: screen.getByLabelText(/^pseudo$/i),
+      emailInput: screen.getByLabelText(/^email$/i),
+      passwordInput: screen.getByLabelText(/^mot de passe$/i),
+      confirmPasswordInput: screen.getByLabelText(/^confirmer le mot de passe$/i),
+      submitButton: screen.getByRole('button', { name: /s'inscrire/i })
+    };
+  };
+
+  test('affiche une erreur si le mot de passe est trop court', async () => {
+    const { pseudoInput, emailInput, passwordInput, confirmPasswordInput, submitButton } = setup();
+    fireEvent.change(pseudoInput, { target: { value: 'testuser' } });
+    fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
+    fireEvent.change(passwordInput, { target: { value: 'Abc123' } }); // 6 caractères
+    fireEvent.change(confirmPasswordInput, { target: { value: 'Abc123' } });
+    fireEvent.click(submitButton);
+    expect(await screen.findByText(/au moins 8 caractères/i)).toBeInTheDocument();
+  });
+
+  test('affiche une erreur si le mot de passe ne contient pas de majuscule', async () => {
+    const { pseudoInput, emailInput, passwordInput, confirmPasswordInput, submitButton } = setup();
+    fireEvent.change(pseudoInput, { target: { value: 'testuser' } });
+    fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
+    fireEvent.change(passwordInput, { target: { value: 'password123' } }); // pas de majuscule
+    fireEvent.change(confirmPasswordInput, { target: { value: 'password123' } });
+    fireEvent.click(submitButton);
+    expect(await screen.findByText(/au moins une lettre majuscule/i)).toBeInTheDocument();
+  });
+
+  test('affiche une erreur si le mot de passe ne contient pas de minuscule', async () => {
+    const { pseudoInput, emailInput, passwordInput, confirmPasswordInput, submitButton } = setup();
+    fireEvent.change(pseudoInput, { target: { value: 'testuser' } });
+    fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
+    fireEvent.change(passwordInput, { target: { value: 'PASSWORD123' } }); // pas de minuscule
+    fireEvent.change(confirmPasswordInput, { target: { value: 'PASSWORD123' } });
+    fireEvent.click(submitButton);
+    expect(await screen.findByText(/au moins une lettre majuscule, une lettre minuscule et un chiffre/i)).toBeInTheDocument();
+  });
+
+  test('affiche une erreur si le mot de passe ne contient pas de chiffre', async () => {
+    const { pseudoInput, emailInput, passwordInput, confirmPasswordInput, submitButton } = setup();
+    fireEvent.change(pseudoInput, { target: { value: 'testuser' } });
+    fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
+    fireEvent.change(passwordInput, { target: { value: 'Password' } }); // pas de chiffre
+    fireEvent.change(confirmPasswordInput, { target: { value: 'Password' } });
+    fireEvent.click(submitButton);
+    expect(await screen.findByText(/au moins une lettre majuscule, une lettre minuscule et un chiffre/i)).toBeInTheDocument();
+  });
 }); 
