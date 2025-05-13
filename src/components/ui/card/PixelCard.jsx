@@ -11,12 +11,15 @@ const PixelCard = ({ suit, value, className = '' }) => {
   const suitColor = suit === "♥" || suit === "♦" ? "text-poker-red" : "text-poker-black";
   
   return (
-    <div className={`relative w-16 h-24 ${className}`}>
-      <div className="absolute inset-0 bg-white border-2 border-black pixel-borders"></div>
+    <div className={`relative w-16 h-24 bg-gray-50 rounded ${className}`}>
+      <div className="absolute inset-0 bg-gray-50 border border-black rounded"></div>
       <div className={`absolute inset-0 flex flex-col items-center justify-center font-pixel ${suitColor}`}>
-        <div className="text-lg">{value}</div>
-        <div className="text-xl">{suit}</div>
+        <div className="text-2xl font-bold">{value}</div>
+        <div className="text-2xl mt-1">{suit}</div>
       </div>
+      {/* Coins décoratifs */}
+      <div className="absolute top-1 left-1 text-xs opacity-70">{suit}</div>
+      <div className="absolute bottom-1 right-1 text-xs opacity-70 rotate-180">{suit}</div>
     </div>
   );
 };
