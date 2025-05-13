@@ -4,12 +4,13 @@ import '@testing-library/jest-dom';
 import Register from '../auth/components/Register';
 import { BrowserRouter } from 'react-router-dom';
 
-// Mock de l'hook useAuth et useNavigate
+// On déclare les mocks à l'extérieur
+const mockRegister = jest.fn();
 jest.mock('../auth/hooks/useAuth', () => ({
   __esModule: true,
   default: () => ({
-    register: jest.fn().mockResolvedValue({}),
-    login: jest.fn().mockResolvedValue({})
+    register: mockRegister,
+    login: jest.fn()
   })
 }));
 
@@ -117,5 +118,47 @@ describe('Register Component', () => {
     fireEvent.change(confirmPasswordInput, { target: { value: 'Password' } });
     fireEvent.click(submitButton);
     expect(await screen.findByText(/au moins une lettre majuscule, une lettre minuscule et un chiffre/i)).toBeInTheDocument();
+  });
+
+  test("affiche un message de succès si l'API retourne 200", async () => {
+    mockRegister.mockResolvedValueOnce({ status: 200 }); // Simule le succès
+
+    render(
+      <BrowserRouter>
+        <Register />
+      </BrowserRouter>
+    );
+
+    fireEvent.change(screen.getByLabelText(/^pseudo$/i), { target: { value: 'testuser' } });
+    fireEvent.change(screen.getByLabelText(/^email$/i), { target: { value: 'test@example.com' } });
+    fireEvent.change(screen.getByLabelText(/^mot de passe$/i), { target: { value: 'Password123' } });
+    fireEvent.change(screen.getByLabelText(/^confirmer le mot de passe$/i), { target: { value: 'Password123' } });
+
+    fireEvent.click(screen.getByRole('button', { name: /s'inscrire/i }));
+
+    await waitFor(() => {
+      expect(screen.getByText(/inscription réussie/i)).toBeInTheDocument();
+    });
+  });
+
+  test("affiche un message d'erreur si l'API retourne 401", async () => {
+    mockRegister.mockRejectedValueOnce({ response: { status: 401 } });
+
+    render(
+      <BrowserRouter>
+        <Register />
+      </BrowserRouter>
+    );
+
+    fireEvent.change(screen.getByLabelText(/^pseudo$/i), { target: { value: 'testuser' } });
+    fireEvent.change(screen.getByLabelText(/^email$/i), { target: { value: 'test@example.com' } });
+    fireEvent.change(screen.getByLabelText(/^mot de passe$/i), { target: { value: 'Password123' } });
+    fireEvent.change(screen.getByLabelText(/^confirmer le mot de passe$/i), { target: { value: 'Password123' } });
+
+    fireEvent.click(screen.getByRole('button', { name: /s'inscrire/i }));
+
+    await waitFor(() => {
+      expect(screen.getByText(/erreur lors de l'inscription\. veuillez réessayer\./i)).toBeInTheDocument();
+    });
   });
 }); 
