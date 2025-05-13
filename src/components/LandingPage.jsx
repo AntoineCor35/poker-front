@@ -180,30 +180,36 @@ const LandingPage = () => {
 
             <div className="relative">
               <div className="relative w-full aspect-square max-w-md mx-auto">
-                {/* Pixel art poker table */}
-                <div className="absolute inset-0 bg-poker-green border-8 border-yellow-800 pixel-borders rounded-full"></div>
+                {/* Pixel art poker table - SANS TOP BORDER */}
+                <div className="absolute inset-0 bg-poker-green border-l-8 border-r-8 border-b-8 border-yellow-800 pixel-borders rounded-full"></div>
 
-                {/* Cards */}
+                {/* Cards avec animation */}
                 <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                  <div className="relative w-64 h-64">
-                    <PixelAnimation className="absolute" style={{ left: '20%', top: '30%', transform: 'rotate(-15deg)' }}>
-                      <PixelCard suit="♥" value="A" className="w-16 h-24" />
+                  <div className="flex justify-center items-center gap-3 w-full">
+                    <PixelAnimation>
+                      <PixelCard suit="♥" value="A" className="w-16 h-24 transform rotate-[-5deg] drop-shadow-lg" />
                     </PixelAnimation>
-                    <PixelAnimation className="absolute" interval={700} style={{ left: '40%', top: '35%', transform: 'rotate(10deg)' }}>
-                      <PixelCard suit="♠" value="K" className="w-16 h-24" />
+                    <PixelAnimation interval={600}>
+                      <PixelCard suit="♦" value="K" className="w-16 h-24 transform rotate-[5deg] drop-shadow-lg" />
+                    </PixelAnimation>
+                    <PixelAnimation interval={700}>
+                      <PixelCard suit="♠" value="Q" className="w-16 h-24 transform rotate-[-5deg] drop-shadow-lg" />
+                    </PixelAnimation>
+                    <PixelAnimation interval={800}>
+                      <PixelCard suit="♣" value="J" className="w-16 h-24 transform rotate-[5deg] drop-shadow-lg" />
                     </PixelAnimation>
                   </div>
                 </div>
 
-                {/* Chips */}
-                <div className="absolute" style={{ left: '30%', top: '60%' }}>
-                  <PixelChip value="25" color="bg-red-500" className="w-12 h-12" />
+                {/* Chips améliorés et plus visibles */}
+                <div className="absolute" style={{ left: '25%', top: '60%' }}>
+                  <PixelChip value="25" color="!bg-red-600" className="w-14 h-14 drop-shadow-xl text-xl" />
                 </div>
                 <div className="absolute" style={{ left: '45%', top: '65%' }}>
-                  <PixelChip value="50" color="bg-blue-500" className="w-12 h-12" />
+                  <PixelChip value="50" color="!bg-blue-600" className="w-14 h-14 drop-shadow-xl text-xl" />
                 </div>
-                <div className="absolute" style={{ left: '60%', top: '62%' }}>
-                  <PixelChip value="100" className="w-12 h-12" />
+                <div className="absolute" style={{ left: '65%', top: '62%' }}>
+                  <PixelChip value="100" color="bg-poker-gold" className="w-14 h-14 drop-shadow-xl text-xl" />
                 </div>
               </div>
             </div>
@@ -215,10 +221,10 @@ const LandingPage = () => {
       <section id="features" className="py-24 relative bg-poker-black">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-6 inline-block border-b-4 border-poker-red pb-2 pixel-borders">
+            <h2 className="text-4xl font-bold mb-6 inline-block border-b-4 border-poker-red pb-2 pixel-borders text-white">
               GAME FEATURES
             </h2>
-            <p className="text-xl max-w-2xl mx-auto">
+            <p className="text-xl max-w-2xl mx-auto text-white">
               Our pixel poker game comes packed with retro-inspired features for an authentic gaming experience
             </p>
           </div>
@@ -342,7 +348,7 @@ const LandingPage = () => {
             </div>
 
             <div className="space-y-8 order-1 md:order-2">
-              <h2 className="text-4xl font-bold">
+              <h2 className="text-4xl font-bold text-white">
                 AUTHENTIC <span className="text-poker-red">8-BIT</span> POKER EXPERIENCE
               </h2>
               <p className="text-xl">
