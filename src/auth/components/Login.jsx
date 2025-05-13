@@ -55,7 +55,7 @@ const Login = () => {
                   type="text"
                   name="pseudo"
                   id="pseudo"
-                  className={`w-full p-2 bg-poker-black border-2 font-pixel ${
+                  className={`w-full p-2 bg-poker-black border-2 font-pixel text-white ${
                     errors.pseudo && touched.pseudo 
                       ? 'border-poker-red' 
                       : 'border-black'
@@ -74,7 +74,7 @@ const Login = () => {
                   type="password"
                   name="password"
                   id="password"
-                  className={`w-full p-2 bg-poker-black border-2 font-pixel ${
+                  className={`w-full p-2 bg-poker-black border-2 font-pixel text-white ${
                     errors.password && touched.password 
                       ? 'border-poker-red' 
                       : 'border-black'
