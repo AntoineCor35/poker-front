@@ -1,124 +1,72 @@
-# Getting Started with Create React App
+# Poker Front-End Application
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Projet libre développé par Antoine Cormier, répondant à l'exercice suivant :
+[Exercice Poker Front-End sur GitLab](https://gitlab.com/docusland-courses/javascript/poker-front-end-application)
 
-## Available Scripts
+> **Statut :** En cours de développement
 
-In the project directory, you can run:
+## Description
 
-### `npm start`
+Cette application est une interface front-end pour un jeu de poker en ligne, réalisée dans le cadre d'un exercice pédagogique. Elle communique avec une API REST back-end dédiée (voir lien ci-dessous).
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## API Back-End
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Le projet utilise l'API suivante pour la gestion des utilisateurs, tables, parties, etc. :
 
-### `npm test`
+- [Repo GitHub de l'API Poker (pokerAPI-MDS)](https://github.com/AntoineCor35/pokerAPI-MDS)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Dockerisation
 
-### `npm run build`
+L'application est dockerisée pour faciliter le déploiement et les tests.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Docker Setup
-
-This project is configured to run with Docker, allowing for both development and production environments.
-
-### Prerequisites
-
-- Docker and Docker Compose installed on your machine
-- The backend API should be running in a Docker container connected to the 'poker-network' network
-
-### Docker Commands
-
-#### Development Mode
+### Build et lancement (développement)
 
 ```bash
-# Start the development server with hot-reload
-npm run docker:dev
+docker-compose up --build
 ```
 
-This will:
+- L'application sera accessible sur [http://localhost:3000](http://localhost:3000)
 
-- Build and run the React app in development mode
-- Mount your local files to enable hot-reloading
-- Connect to the backend API via the Docker network
-- Expose the app on http://localhost:3000
-
-#### Production Mode
+### Build et lancement (production)
 
 ```bash
-# Build the production image
-npm run docker:build
-
-# Start the production container
-npm run docker:prod
+docker-compose -f docker-compose.prod.yml up --build
 ```
 
-This will:
+### Variables d'environnement
 
-- Build an optimized production version of the app
-- Serve it using Nginx
-- Configure API proxying
-- Expose the app on port 80 (http://localhost)
+- `.env` et `.env.development` contiennent les variables nécessaires (API URL, etc.)
 
-### Container Structure
+## Tests
 
-- Development: Uses Node.js Alpine to run the development server
-- Production: Builds the app with Node.js and serves it with Nginx
-- The Nginx configuration handles React routing and proxies API requests to the backend
+### Tests unitaires (Jest)
 
-### Environment Configuration
+Lancer tous les tests unitaires :
 
-- Development: Uses variables from `.env.development`
-- Production: Uses variables baked into the image during build
-- API URL is configured to connect to the backend service
+```bash
+npm run test
+```
 
-## Learn More
+### Tests end-to-end (Cypress)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Lancer l'interface Cypress :
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```bash
+npx cypress open
+```
 
-### Code Splitting
+Lancer les tests Cypress en mode headless :
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+```bash
+npx cypress run
+```
 
-### Analyzing the Bundle Size
+Les scénarios de sécurité (XSS, injection, duplication, etc.) sont couverts dans `src/__tests__/e2e/`.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## Contributeur
 
-### Making a Progressive Web App
+Antoine Cormier — créateur et unique contributeur du projet.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+---
 
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Pour toute question ou suggestion, n'hésitez pas à ouvrir une issue ou à me contacter.
