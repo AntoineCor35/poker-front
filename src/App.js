@@ -40,6 +40,7 @@ function App() {
             {/* Routes publiques */}
             <Route path="/login" element={
               <>
+                {console.log('Rendering Login route')}
                 <Navbar />
                 <PixelContainer className="content max-w-5xl mx-auto mt-8">
                   <Login />

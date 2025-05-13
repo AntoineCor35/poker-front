@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext, useState, useEffect, useMemo } from 'react';
 import authService from '../services/authService';
 
 // Création du contexte d'authentification
@@ -104,7 +104,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   // Valeur du contexte exposée aux composants enfants
-  const contextValue = {
+  const contextValue = useMemo(() => ({
     user,
     loading,
     error,
@@ -113,7 +113,7 @@ export const AuthProvider = ({ children }) => {
     register,
     logout,
     setUser,
-  };
+  }), [user, loading, error, isAuthenticated, login, register, logout, setUser]);
 
   return (
     <AuthContext.Provider value={contextValue}>
