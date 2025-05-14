@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { fetchTables, joinTable, getTable, startGame, leaveTable, getPossibleActions } from '../api/tables';
+import { fetchTables, joinTable, getTable, startGame, leaveTable, getPossibleActions, playAction } from '../api/tables';
 import { useAuth } from '../auth/context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
+import PixelCard from '../components/ui/card/PixelCard';
+import PixelChip from '../components/ui/chip/PixelChip';
+import PokerTableLayout from './PokerTableLayout';
 
 const TablesPage = () => {
   const [tables, setTables] = useState([]);
@@ -80,9 +83,22 @@ const TableStatus = ({ table, userId }) => {
   const me = userId ? table.players.find(p => p.id === userId) : null;
 
   // Helper pour afficher la main
-  const renderHand = (hand) => hand && hand.length > 0
-    ? hand.map(card => `${card.value}${suitToSymbol(card.suit)}`).join(', ')
-    : '—';
+  const renderHand = (hand, show = true) => {
+    if (!hand || hand.length === 0) return <span>—</span>;
+    if (!show) {
+      // Affiche un dos de carte pour chaque carte
+      return (
+        <span className="flex gap-1">{hand.map((_, i) => (
+          <PixelCard key={i} suit="?" value="" className="bg-poker-blue/80" />
+        ))}</span>
+      );
+    }
+    return (
+      <span className="flex gap-1">{hand.map((card, i) => (
+        <PixelCard key={i} suit={suitToSymbol(card.suit)} value={card.value} />
+      ))}</span>
+    );
+  };
 
   // Helper pour les rôles
   const getRoles = (p) => [
@@ -115,14 +131,19 @@ const TableStatus = ({ table, userId }) => {
       )}
       <div className="mb-2">Joueurs :</div>
       <ul className="mb-2 ml-4">
-        {table.players.map((p) => (
-          <li key={p.id} className={p.isCurrentPlayer ? 'font-bold text-poker-gold' : ''}>
-            {p.name} ({p.chips} chips)
-            {getRoles(p) && <span className="text-xs ml-2">[{getRoles(p)}]</span>}
-            {' | '}Main : {renderHand(p.hand)}
-            {' | '}Bet: {p.currentBet}
-          </li>
-        ))}
+        {table.players.map((p) => {
+          // On montre la main seulement si c'est le joueur connecté ou le joueur courant
+          const showHand = (userId && p.id === userId) || p.isCurrentPlayer;
+          return (
+            <li key={p.id} className={p.isCurrentPlayer ? 'font-bold text-poker-gold flex items-center gap-2' : 'flex items-center gap-2'}>
+              <span>{p.name}</span>
+              <PixelChip value={p.chips} className="w-6 h-6" />
+              {getRoles(p) && <span className="text-xs ml-2">[{getRoles(p)}]</span>}
+              <span className="ml-2">Main :</span> {renderHand(p.hand, showHand)}
+              <span className="ml-2">Bet: {p.currentBet}</span>
+            </li>
+          );
+        })}
       </ul>
       {me && (
         <div className="mb-2">Votre main : <b>{renderHand(me.hand)}</b></div>
@@ -188,24 +209,26 @@ export const TableView = () => {
     }
   };
 
+  // Ajout du handler pour les actions du joueur
+  const handlePlayerAction = async (action, amount = null) => {
+    try {
+      const res = await playAction(id, action, amount);
+      setApiResponse(res); // Utilise directement la réponse de l'action
+    } catch (err) {
+      setApiResponse(err.message || 'Erreur lors de l\'action de jeu');
+    }
+  };
+
   if (loading) return <div>Chargement de la table...</div>;
   if (error) return <div>Erreur : {error}</div>;
   if (!table) return <div>Table introuvable</div>;
 
   return (
-    <div className="p-4 max-w-2xl mx-auto">
+    <div className="p-4 w-full flex flex-col items-center justify-center">
       <h1 className="text-2xl font-bold mb-4 text-white">Table : {table.name}</h1>
       <div className="text-white mb-2">ID : {table.id}</div>
       <div className="text-white mb-2">Statut : {table.status}</div>
-      <div className="text-white mb-2">Joueurs ({table.players.length} / {table.maxPlayers}) :</div>
-      <ul className="text-white mb-4">
-        {table.players.map((player) => (
-          <li key={player.id}>{player.name} (Chips : {player.chips})</li>
-        ))}
-      </ul>
-      <div className="text-white mb-2">Blindes : {table.smallBlind} / {table.bigBlind}</div>
-      <div className="text-white mb-2">Pot : {table.pot}</div>
-      <div className="flex gap-4 mt-6">
+      <div className="flex gap-4 mt-6 mb-6">
         {table.status !== 'Ongoing' && (
           <button onClick={handlePlay} className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Play</button>
         )}
@@ -213,13 +236,44 @@ export const TableView = () => {
       </div>
       {apiResponse && apiResponse.table && (
         <>
-          <TableStatus table={apiResponse.table} userId={user?.id} />
-          {apiResponse.possibleActions && (
-            <div className="mb-2 mt-4 text-white">
-              Actions possibles pour {apiResponse.currentPlayer?.name || 'le joueur courant'} :
-              <b> {apiResponse.possibleActions.join(', ')}</b>
-            </div>
-          )}
+          {console.log('DEBUG', {
+            players: apiResponse.table.players,
+            myId: user?.id,
+            actions: apiResponse.possibleActions,
+            currentPlayer: apiResponse.table.players.find(p => p.isCurrentPlayer),
+          })}
+          <PokerTableLayout
+            players={apiResponse.table.players}
+            myId={user?.id}
+            board={{
+              flop: apiResponse.table.river?.slice(0, 3) || [],
+              turn: apiResponse.table.river?.[3],
+              river: apiResponse.table.river?.[4],
+            }}
+            round={apiResponse.table.round}
+            pot={apiResponse.table.pot}
+            actions={apiResponse.possibleActions || []}
+            onAction={handlePlayerAction}
+          />
+          {/* Affichage textuel du gameLog */}
+          <div className="mt-8 w-full max-w-2xl bg-black/80 rounded p-4 text-white">
+            <h2 className="text-lg font-bold mb-2">Historique de la partie</h2>
+            <ul className="text-xs space-y-1">
+              {apiResponse.table.gameLog && apiResponse.table.gameLog.length > 0 ? (
+                apiResponse.table.gameLog.map((log, i) => (
+                  <li key={i} className="border-b border-gray-700 pb-1 mb-1">
+                    <span className="text-poker-gold font-mono mr-2">{log.timestamp ? new Date(log.timestamp).toLocaleTimeString() + ' ' : ''}</span>
+                    <span className="font-semibold">{log.message}</span>
+                    {log.data && (
+                      <span className="ml-2 text-gray-300">{JSON.stringify(log.data)}</span>
+                    )}
+                  </li>
+                ))
+              ) : (
+                <li>Aucun historique pour cette table.</li>
+              )}
+            </ul>
+          </div>
         </>
       )}
       {apiResponse && !apiResponse.table && (
