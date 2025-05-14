@@ -18,8 +18,8 @@ describe('Sécurité XSS - Formulaire d\'inscription', () => {
     cy.contains('erreur').should('exist'); // adapte le texte selon ton UI
 
     // 2. OU, si l'inscription passe, le pseudo affiché ne doit pas contenir le code brut
-    // cy.contains(xssPseudo).should('not.exist');
-    // cy.contains('<script>').should('not.exist');
+    cy.contains(xssPseudo).should('not.exist');
+    cy.contains('<script>').should('not.exist');
   });
 
   it('affiche une erreur si le pseudo est trop long ou contient une payload XSS', () => {
