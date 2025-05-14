@@ -72,6 +72,9 @@ const LandingPage = () => {
               <a href="#join" className="hover:text-poker-gold transition-colors">
                 JOIN
               </a>
+              <Link to="/tables" className="hover:text-poker-gold transition-colors">
+                TABLES
+              </Link>
             </div>
 
             <div className="hidden md:flex space-x-4">
@@ -118,6 +121,9 @@ const LandingPage = () => {
               <a href="#join" className="py-2" onClick={() => setMobileMenuOpen(false)}>
                 JOIN
               </a>
+              <Link to="/tables" className="py-2" onClick={() => setMobileMenuOpen(false)}>
+                TABLES
+              </Link>
               <div className="flex flex-col space-y-2 pt-2 border-t-4 border-black pixel-borders">
                 {isAuthenticated ? (
                   <>

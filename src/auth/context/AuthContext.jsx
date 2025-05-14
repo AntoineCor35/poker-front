@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect, useMemo } from 'react';
+import React, { createContext, useState, useEffect, useMemo, useContext } from 'react';
 import authService from '../services/authService';
 
 // Création du contexte d'authentification
@@ -122,4 +122,7 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-export default AuthProvider; 
+export default AuthProvider;
+
+// Ajout du hook useAuth pour accès et mock facile dans les tests
+export const useAuth = () => useContext(AuthContext); 

@@ -25,11 +25,9 @@ const Navbar = () => {
         <div className="flex flex-col sm:flex-row w-full sm:w-auto items-center gap-4">
           <div className="navbar-start flex gap-4">
             <Link to="/" className="px-2 text-white hover:text-poker-gold">Accueil</Link>
+            <Link to="/tables" className="px-2 text-white hover:text-poker-gold">Tables</Link>
             {isAuthenticated && (
-              <>
-                <Link to="/tables" className="px-2 text-white hover:text-poker-gold">Tables</Link>
-                <Link to="/profile" className="px-2 text-white hover:text-poker-gold">Profil</Link>
-              </>
+              <Link to="/profile" className="px-2 text-white hover:text-poker-gold">Profil</Link>
             )}
           </div>
           
