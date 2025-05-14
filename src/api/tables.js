@@ -14,4 +14,19 @@ export const joinTable = async (tableId) => {
 export const getTable = async (tableId) => {
   const response = await api.get(`/tables/${tableId}`);
   return response.data;
+};
+
+export const startGame = async (tableId) => {
+  const response = await api.post(`/tables/${tableId}/start`);
+  return response.data;
+};
+
+export const leaveTable = async (tableId) => {
+  const response = await api.post(`/tables/${tableId}`, { action: 'leave' });
+  return response.data;
+};
+
+export const getPossibleActions = async (tableId) => {
+  const response = await api.get(`/tables/${tableId}/status`);
+  return response.data;
 }; 
