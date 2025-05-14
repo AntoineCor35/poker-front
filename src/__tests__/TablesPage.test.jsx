@@ -56,6 +56,7 @@ function renderWithRouter(ui) {
 
 describe('TablesPage', () => {
   beforeEach(() => {
+    (useAuth).mockReturnValue({ isAuthenticated: false });
     jest.clearAllMocks();
   });
 
