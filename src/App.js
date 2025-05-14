@@ -14,7 +14,7 @@ import PrivateRoute from './auth/components/PrivateRoute';
 import Navbar from './auth/components/Navbar';
 import Home from './Home'; // Créer ce composant plus tard
 import LandingPage from './components/LandingPage';
-import TablesPage from './components/TablesPage';
+import TablesPage, { TableView } from './components/TablesPage';
 
 // Import pixel art components
 import { PixelContainer } from './components/ui';
@@ -61,6 +61,14 @@ function App() {
                 <Navbar />
                 <PixelContainer className="content max-w-5xl mx-auto mt-8">
                   <TablesPage />
+                </PixelContainer>
+              </>
+            } />
+            <Route path="/tables/:id" element={
+              <>
+                <Navbar />
+                <PixelContainer className="content max-w-5xl mx-auto mt-8">
+                  <TableView />
                 </PixelContainer>
               </>
             } />
