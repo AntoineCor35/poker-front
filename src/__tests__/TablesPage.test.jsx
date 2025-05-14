@@ -93,7 +93,7 @@ describe('TablesPage', () => {
     fireEvent.click(joinButtons[0]);
     await waitFor(() => {
       // À adapter selon ta logique de redirection
-      expect(window.location.pathname).toBe('/signup');
+      expect(window.location.pathname).toBe('/register');
     });
   });
 
