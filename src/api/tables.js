@@ -9,4 +9,9 @@ export const fetchTables = async () => {
 export const joinTable = async (tableId) => {
   const response = await api.post(`/tables/${tableId}`, { action: 'join' });
   return response.data;
+};
+
+export const getTable = async (tableId) => {
+  const response = await api.get(`/tables/${tableId}`);
+  return response.data;
 }; 
