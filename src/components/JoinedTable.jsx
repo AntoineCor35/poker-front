@@ -1,14 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { joinTable, getPossibleActions } from '../api/tables';
+import { joinTable, getPossibleActions, startGame } from '../api/tables';
 import TableHeader from './TableHeader';
 
 const JoinedTable = () => {
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [tableData, setTableData] = useState(null);
+  const [tableData, setTableData] = useState(null); // tout sauf gameLog
+  const [gameLog, setGameLog] = useState([]); // juste l'historique
   const [actions, setActions] = useState(null);
+  const [currentPlayer, setCurrentPlayer] = useState(null);
+  const [startLoading, setStartLoading] = useState(false);
+
+  // Helper pour séparer gameLog du reste
+  const extractTableState = (table) => {
+    if (!table) return { tableWithoutLog: null, gameLog: [] };
+    const { gameLog, ...tableWithoutLog } = table;
+    return { tableWithoutLog, gameLog: gameLog || [] };
+  };
 
   useEffect(() => {
     const fetchTable = async () => {
@@ -16,13 +26,22 @@ const JoinedTable = () => {
       setError(null);
       try {
         const res = await joinTable(id);
-        if (res.success) {
-          setTableData(res.table);
-        } else if (res.error && res.error.includes('already')) {
-          // Si déjà rejoint, on récupère les actions possibles
+        if (res.success && res.table) {
+          const { tableWithoutLog, gameLog } = extractTableState(res.table);
+          setTableData(tableWithoutLog);
+          setGameLog(gameLog);
+          setActions(res.possibleActions || null);
+          setCurrentPlayer(res.currentPlayer || null);
+        } else if (res.error && (res.error.includes('already') || res.error.includes('progress'))) {
+          // Si déjà rejoint ou partie en cours, on récupère les actions possibles
           const actionsRes = await getPossibleActions(id);
-          setTableData(actionsRes.table);
-          setActions(actionsRes.possibleActions);
+          if (actionsRes.table) {
+            const { tableWithoutLog, gameLog } = extractTableState(actionsRes.table);
+            setTableData(tableWithoutLog);
+            setGameLog(gameLog);
+            setActions(actionsRes.possibleActions || null);
+            setCurrentPlayer(actionsRes.currentPlayer || null);
+          }
         } else {
           setError(res.error || 'Erreur inconnue');
         }
@@ -34,6 +53,38 @@ const JoinedTable = () => {
     };
     fetchTable();
   }, [id]);
+
+  // Handler pour démarrer la partie
+  const handleStartGame = async () => {
+    setStartLoading(true);
+    setError(null);
+    try {
+      const res = await startGame(id);
+      if (res.success && res.table) {
+        const { tableWithoutLog, gameLog } = extractTableState(res.table);
+        setTableData(tableWithoutLog);
+        setGameLog(gameLog);
+        setActions(res.possibleActions || null);
+        setCurrentPlayer(res.currentPlayer || null);
+      } else if (res.error && res.error.includes('progress')) {
+        // Partie déjà en cours, on récupère l'état
+        const actionsRes = await getPossibleActions(id);
+        if (actionsRes.table) {
+          const { tableWithoutLog, gameLog } = extractTableState(actionsRes.table);
+          setTableData(tableWithoutLog);
+          setGameLog(gameLog);
+          setActions(actionsRes.possibleActions || null);
+          setCurrentPlayer(actionsRes.currentPlayer || null);
+        }
+      } else {
+        setError(res.error || 'Erreur lors du démarrage de la partie');
+      }
+    } catch (err) {
+      setError(err.message || 'Erreur lors du démarrage de la partie');
+    } finally {
+      setStartLoading(false);
+    }
+  };
 
   if (loading) return <div>Chargement de la table...</div>;
   if (error) return <div>Erreur : {error}</div>;
@@ -48,10 +99,15 @@ const JoinedTable = () => {
         turn={tableData.turn}
       />
       {tableData.status === 'Waiting' && (
-        <button className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mb-4">
-          Commencer la partie
+        <button 
+          className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mb-4"
+          onClick={handleStartGame}
+          disabled={startLoading}
+        >
+          {startLoading ? 'Démarrage...' : 'Commencer la partie'}
         </button>
       )}
+      {/* Ici tu pourras passer gameLog, actions, currentPlayer à d'autres composants */}
     </div>
   );
 };

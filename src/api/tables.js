@@ -18,7 +18,13 @@ export const getTable = async (tableId) => {
 
 export const startGame = async (tableId) => {
   const response = await api.post(`/tables/${tableId}/start`);
-  return response.data;
+  const data = response.data;
+  if (!data.success && data.error && data.error.includes('progress')) {
+    // Partie déjà en cours, on récupère l'état courant
+    const statusRes = await api.get(`/tables/${tableId}/status`);
+    return statusRes.data;
+  }
+  return data;
 };
 
 export const leaveTable = async (tableId) => {
