@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { joinTable, getPossibleActions, startGame } from '../api/tables';
 import TableHeader from './TableHeader';
+import GameLog from './GameLog';
 
 const JoinedTable = () => {
   const { id } = useParams();
@@ -62,6 +63,7 @@ const JoinedTable = () => {
       const res = await startGame(id);
       if (res.success && res.table) {
         const { tableWithoutLog, gameLog } = extractTableState(res.table);
+        console.log("tableWithoutLog", tableWithoutLog);
         setTableData(tableWithoutLog);
         setGameLog(gameLog);
         setActions(res.possibleActions || null);
@@ -86,6 +88,9 @@ const JoinedTable = () => {
     }
   };
 
+  console.log(gameLog);
+  console.log(tableData);
+
   if (loading) return <div>Chargement de la table...</div>;
   if (error) return <div>Erreur : {error}</div>;
   if (!tableData) return null;
@@ -97,7 +102,10 @@ const JoinedTable = () => {
         status={tableData.status}
         round={tableData.round}
         turn={tableData.turn}
+        smallBlind={tableData.smallBlind}
+        bigBlind={tableData.bigBlind}
       />
+      <GameLog log={gameLog} />
       {tableData.status === 'Waiting' && (
         <button 
           className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mb-4"
