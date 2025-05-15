@@ -29,6 +29,7 @@ const XIcon = () => (
 
 // Composant pour les éléments en pixel art
 const PixelArt = ({ className, children, style }) => (
+  
   <div className={`pixel-art ${className}`} style={style}>
     {children}
   </div>
@@ -64,13 +65,13 @@ const LandingPage = () => {
 
             <div className="hidden md:flex space-x-8">
               <a href="#features" className="hover:text-poker-gold transition-colors">
-                FEATURES
+                FONCTIONNALITÉS
               </a>
               <a href="#gameplay" className="hover:text-poker-gold transition-colors">
-                GAMEPLAY
+                JEU
               </a>
               <a href="#join" className="hover:text-poker-gold transition-colors">
-                JOIN
+                REJOINDRE
               </a>
               <Link to="/tables" className="hover:text-poker-gold transition-colors">
                 TABLES
@@ -86,17 +87,17 @@ const LandingPage = () => {
                   <Link to="/profile">
                     <PixelButton size="sm">Profil</PixelButton>
                   </Link>
-                  <PixelButton size="sm" variant="outline" onClick={logout}>Logout</PixelButton>
+                  <PixelButton size="sm" variant="outline" onClick={logout}>Déconnexion</PixelButton>
                 </>
               ) : (
                 <>
                   <Link to="/login">
                     <PixelButton variant="outline" size="sm">
-                      LOGIN
+                      CONNEXION
                     </PixelButton>
                   </Link>
                   <Link to="/register">
-                    <PixelButton size="sm">SIGN UP</PixelButton>
+                    <PixelButton size="sm">INSCRIPTION</PixelButton>
                   </Link>
                 </>
               )}
@@ -113,13 +114,13 @@ const LandingPage = () => {
           <div className="md:hidden bg-poker-black border-t-4 border-black pixel-borders">
             <div className="container mx-auto px-4 py-4 flex flex-col space-y-4">
               <a href="#features" className="py-2" onClick={() => setMobileMenuOpen(false)}>
-                FEATURES
+                FONCTIONNALITÉS
               </a>
               <a href="#gameplay" className="py-2" onClick={() => setMobileMenuOpen(false)}>
-                GAMEPLAY
+                JEU
               </a>
               <a href="#join" className="py-2" onClick={() => setMobileMenuOpen(false)}>
-                JOIN
+                REJOINDRE
               </a>
               <Link to="/tables" className="py-2" onClick={() => setMobileMenuOpen(false)}>
                 TABLES
@@ -133,18 +134,18 @@ const LandingPage = () => {
                     <Link to="/profile">
                       <PixelButton className="w-full">Profil</PixelButton>
                     </Link>
-                    <PixelButton className="w-full" variant="outline" onClick={() => { logout(); setMobileMenuOpen(false); }}>Logout</PixelButton>
+                    <PixelButton className="w-full" variant="outline" onClick={() => { logout(); setMobileMenuOpen(false); }}>Déconnexion</PixelButton>
                   </>
                 ) : (
                   <>
                     <Link to="/login">
                       <PixelButton variant="outline" className="w-full">
-                        LOGIN
+                        CONNEXION
                       </PixelButton>
                     </Link>
                     <Link to="/register">
                       <PixelButton className="w-full">
-                        SIGN UP
+                        INSCRIPTION
                       </PixelButton>
                     </Link>
                   </>
@@ -181,16 +182,15 @@ const LandingPage = () => {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="space-y-8">
               <div className="inline-block px-4 py-1 bg-poker-gold text-poker-black border-2 border-black pixel-borders">
-                8-BIT POKER EXPERIENCE
+                EXPÉRIENCE POKER 8-BIT
               </div>
               <h1 className="text-5xl md:text-6xl font-bold leading-tight">
-                PLAY POKER
+                JOUE AU POKER
                 <br />
-                <span className="text-poker-red">PIXEL STYLE</span>
+                <span className="text-poker-red">STYLE PIXEL</span>
               </h1>
               <p className="text-xl">
-                Experience poker like never before with our retro-inspired pixel art poker game. Strategy, fun, and
-                nostalgia in every hand.
+                Découvre le poker comme jamais auparavant avec notre jeu de poker en pixel art rétro. Stratégie, fun et nostalgie à chaque main.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link to="/register">
@@ -198,7 +198,7 @@ const LandingPage = () => {
                     size="lg"
                     className="w-full sm:w-auto"
                   >
-                    START PLAYING
+                    COMMENCER À JOUER
                     <ChevronRight />
                   </PixelButton>
                 </Link>
@@ -208,7 +208,7 @@ const LandingPage = () => {
                     variant="outline"
                     className="w-full sm:w-auto"
                   >
-                    EXPLORE FEATURES
+                    DÉCOUVRIR LES FONCTIONNALITÉS
                   </PixelButton>
                 </a>
               </div>
@@ -258,10 +258,10 @@ const LandingPage = () => {
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold mb-6 inline-block border-b-4 border-poker-red pb-2 pixel-borders text-white">
-              GAME FEATURES
+              FONCTIONNALITÉS DU JEU
             </h2>
             <p className="text-xl max-w-2xl mx-auto text-white">
-              Our pixel poker game comes packed with retro-inspired features for an authentic gaming experience
+              Notre jeu de poker pixel regorge de fonctionnalités rétro pour une expérience authentique
             </p>
           </div>
 
@@ -270,37 +270,37 @@ const LandingPage = () => {
               {
                 icon: '👤',
                 title: 'CUSTOM PROFILE',
-                description: 'Create your pixel avatar and customize your poker identity',
+                description: 'Crée ton avatar pixel et personnalise ton identité de joueur - WILL BE AVAILABLE SOON',
                 borderColor: 'border-poker-red',
               },
               {
                 icon: '💰',
                 title: 'CHIP MANAGEMENT',
-                description: 'Track your balance in real-time with our pixel-perfect chip system',
+                description: 'Suis ton solde en temps réel avec notre système de jetons pixel - WILL BE AVAILABLE SOON',
                 borderColor: 'border-black',
               },
               {
                 icon: '🎮',
                 title: 'MULTIPLE TABLES',
-                description: 'Join different tables based on your skill level and chip stack',
+                description: 'Rejoins différentes tables selon ton niveau et ta bankroll - WILL BE AVAILABLE SOON',
                 borderColor: 'border-poker-gold',
               },
               {
                 icon: '🎲',
                 title: 'LIVE GAMES',
-                description: 'Experience the thrill of real-time poker with players worldwide',
+                description: "Ressens l'adrénaline du poker en temps réel avec des joueurs du monde entier - WILL BE AVAILABLE SOON",
                 borderColor: 'border-poker-red',
               },
               {
                 icon: '🏆',
                 title: 'TOURNAMENTS',
-                description: 'Compete in regular tournaments and win exclusive pixel trophies',
+                description: 'Participe à des tournois réguliers et gagne des trophées pixel exclusifs - WILL BE AVAILABLE SOON',
                 borderColor: 'border-black',
               },
               {
                 icon: '📊',
                 title: 'LEADERBOARDS',
-                description: 'Climb the ranks and become the pixel poker champion',
+                description: 'Grimpe dans le classement et deviens le champion pixel poker - WILL BE AVAILABLE SOON',
                 borderColor: 'border-poker-gold',
               },
             ].map((feature, i) => (
@@ -385,26 +385,25 @@ const LandingPage = () => {
 
             <div className="space-y-8 order-1 md:order-2">
               <h2 className="text-4xl font-bold text-white">
-                AUTHENTIC <span className="text-poker-red">8-BIT</span> POKER EXPERIENCE
+                UNE EXPÉRIENCE POKER <span className="text-poker-red">8-BIT</span> AUTHENTIQUE
               </h2>
               <p className="text-xl">
-                Our intuitive pixel interface brings you back to the golden age of gaming while delivering a modern
-                poker experience.
+                Notre interface pixel intuitive te ramène à l'âge d'or du jeu vidéo tout en offrant une expérience poker moderne  - WORK IN PROGRESS.
               </p>
 
               <div className="space-y-6">
                 {[
                   {
                     title: 'PIXEL-PERFECT INTERFACE',
-                    description: 'Navigate through our retro-inspired UI designed for maximum nostalgia.',
+                    description: 'Navigue dans notre interface rétro pensée pour un max de nostalgie - WORK IN PROGRESS.',
                   },
                   {
                     title: 'CHIP ANIMATIONS',
-                    description: 'Watch your chips stack and move with authentic pixel animations.',
+                    description: 'Regarde tes jetons s\'animer et s\'empiler avec de vraies animations pixel - WORK IN PROGRESS.',
                   },
                   {
                     title: 'RETRO SOUND EFFECTS',
-                    description: 'Experience the satisfying 8-bit sounds of cards shuffling and chips clinking.',
+                    description: 'Savoure les sons 8-bit des cartes qui battent et des jetons qui s\'entrechoquent - WORK IN PROGRESS.',
                   },
                 ].map((item, i) => (
                   <div key={i} className="flex space-x-4">
@@ -421,7 +420,7 @@ const LandingPage = () => {
 
               <Link to="/register">
                 <PixelButton size="lg">
-                  TRY NOW
+                  ESSAYER MAINTENANT
                   <ChevronRight />
                 </PixelButton>
               </Link>
@@ -440,11 +439,11 @@ const LandingPage = () => {
               </div>
 
               <h2 className="text-4xl font-bold">
-                READY TO PLAY YOUR <span className="text-poker-red">BEST HAND</span>?
+                PRÊT À JOUER VOTRE <span className="text-poker-red">MEILLEURE MAIN</span> ?
               </h2>
 
               <p className="text-xl max-w-2xl mx-auto">
-                Join PIXELPOKER now and receive a welcome bonus of 500 chips to start your poker adventure.
+                Rejoins PIXELPOKER maintenant et reçois un bonus de bienvenue de 1000 jetons pour commencer ton aventure poker.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
@@ -466,7 +465,7 @@ const LandingPage = () => {
                         size="lg"
                         className="w-full sm:w-auto"
                       >
-                        CREATE ACCOUNT
+                        CRÉER UN COMPTE
                       </PixelButton>
                     </Link>
                     <Link to="/login">
@@ -475,7 +474,7 @@ const LandingPage = () => {
                         variant="outline"
                         className="w-full sm:w-auto"
                       >
-                        LOGIN
+                        CONNEXION
                       </PixelButton>
                     </Link>
                   </>
@@ -500,47 +499,47 @@ const LandingPage = () => {
                 </span>
               </Link>
               <p className="text-gray-300 text-sm">
-                The next generation of retro poker gaming. Strategy, fun, and nostalgia in every hand.
+                La nouvelle génération du poker rétro. Stratégie, fun et nostalgie à chaque main - WORK IN PROGRESS.
               </p>
             </div>
 
             <div>
-              <h3 className="font-bold mb-4 border-b-2 border-poker-red pb-1 inline-block">QUICK LINKS</h3>
+              <h3 className="font-bold mb-4 border-b-2 border-poker-red pb-1 inline-block">LIENS RAPIDES</h3>
               <ul className="space-y-2 text-gray-300">
                 <li>
                   <a href="#features" className="hover:text-poker-gold transition-colors">
-                    Features
+                    Fonctionnalités
                   </a>
                 </li>
                 <li>
                   <a href="#gameplay" className="hover:text-poker-gold transition-colors">
-                    Gameplay
+                    Jeu
                   </a>
                 </li>
                 <li>
                   <a href="#join" className="hover:text-poker-gold transition-colors">
-                    Join
+                    Rejoindre
                   </a>
                 </li>
               </ul>
             </div>
 
             <div>
-              <h3 className="font-bold mb-4 border-b-2 border-poker-red pb-1 inline-block">LEGAL</h3>
+              <h3 className="font-bold mb-4 border-b-2 border-poker-red pb-1 inline-block">LÉGAL</h3>
               <ul className="space-y-2 text-gray-300">
                 <li>
                   <a href="#" className="hover:text-poker-gold transition-colors">
-                    Terms of Use
+                    Conditions d'utilisation
                   </a>
                 </li>
                 <li>
                   <a href="#" className="hover:text-poker-gold transition-colors">
-                    Privacy Policy
+                    Politique de confidentialité
                   </a>
                 </li>
                 <li>
                   <a href="#" className="hover:text-poker-gold transition-colors">
-                    Legal Notice
+                    Mentions légales
                   </a>
                 </li>
               </ul>
@@ -556,12 +555,12 @@ const LandingPage = () => {
                 </li>
                 <li>
                   <a href="#" className="hover:text-poker-gold transition-colors">
-                    Partnerships
+                    Partenariats
                   </a>
                 </li>
                 <li>
                   <a href="#" className="hover:text-poker-gold transition-colors">
-                    Careers
+                    Carrières
                   </a>
                 </li>
               </ul>
@@ -569,7 +568,7 @@ const LandingPage = () => {
           </div>
 
           <div className="border-t-4 border-black pixel-borders mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
-            <p className="text-gray-400 text-sm">© 2025 PIXELPOKER. ALL RIGHTS RESERVED.</p>
+            <p className="text-gray-400 text-sm">© 2025 PIXELPOKER. TOUS DROITS RÉSERVÉS.</p>
             <div className="flex space-x-6 mt-4 md:mt-0">
               <a href="#" className="text-gray-400 hover:text-poker-gold transition-colors">
                 <div className="w-8 h-8 bg-poker-green-dark border-2 border-gray-400 pixel-borders flex items-center justify-center">

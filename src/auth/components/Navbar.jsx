@@ -15,47 +15,51 @@ const Navbar = () => {
     navigate('/login');
   };
 
+  const PixelArt = ({ className, children, style }) => (
+    <div className={`pixel-art ${className}`} style={style}>
+      {children}
+    </div>
+  );
+
   return (
-    <nav className="bg-poker-black border-b-4 border-poker-gold py-4 font-pixel">
-      <div className="container mx-auto px-4 flex flex-col sm:flex-row items-center justify-between">
-        <div className="navbar-brand mb-4 sm:mb-0">
-          <Link to="/" className="text-xl text-poker-gold uppercase">Poker App</Link>
+    <nav className="bg-poker-black border-b-4 border-poker-gold font-pixel sticky top-0 z-50">
+      <div className="container mx-auto px-4 flex items-center justify-between h-16">
+        {/* Logo + Texte */}
+        <Link to="/" className="flex items-center space-x-2">
+              <PixelArt className="w-10 h-10 bg-poker-red border-2 border-black pixel-borders flex items-center justify-center">
+                <span className="text-xl font-bold text-white">P</span>
+              </PixelArt>
+              <span className="font-bold text-xl tracking-wider text-white">
+                PIXEL<span className="text-poker-red">POKER</span>
+              </span>
+            </Link>
+        {/* Liens de navigation */}
+        <div className="flex items-center space-x-8 uppercase">
+          <Link to="/" className="px-2 text-white hover:text-poker-gold">ACCUEIL</Link>
+          <Link to="/tables" className="px-2 text-white hover:text-poker-gold">TABLES</Link>
+          {isAuthenticated && (
+            <Link to="/profile" className="px-2 text-white hover:text-poker-gold">PROFIL</Link>
+          )}
         </div>
-        
-        <div className="flex flex-col sm:flex-row w-full sm:w-auto items-center gap-4">
-          <div className="navbar-start flex gap-4">
-            <Link to="/" className="px-2 text-white hover:text-poker-gold">Accueil</Link>
-            <Link to="/tables" className="px-2 text-white hover:text-poker-gold">Tables</Link>
-            {isAuthenticated && (
-              <Link to="/profile" className="px-2 text-white hover:text-poker-gold">Profil</Link>
-            )}
-          </div>
-          
-          <div className="navbar-end flex items-center gap-4 mt-4 sm:mt-0">
-            {isAuthenticated ? (
-              <div className="flex items-center gap-4">
-                <div className="flex items-center gap-2">
-                  <span className="text-white">{user?.pseudo}</span>
-                  <PokerChipIcon value={user?.bank || 0} size={32} />
-                </div>
-                <PixelButton 
-                  onClick={handleLogout} 
-                  className="text-sm px-3 py-1"
-                >
-                  Logout
-                </PixelButton>
-              </div>
-            ) : (
-              <div className="flex gap-4">
-                <Link to="/login">
-                  <PixelButton className="text-sm px-3 py-1">Connexion</PixelButton>
-                </Link>
-                <Link to="/register">
-                  <PixelButton className="text-sm px-3 py-1 bg-poker-green hover:bg-green-700">Inscription</PixelButton>
-                </Link>
-              </div>
-            )}
-          </div>
+        {/* Actions utilisateur */}
+        <div className="flex items-center gap-4">
+          {isAuthenticated ? (
+            <>
+              <span className="flex items-center gap-2 text-poker-gold">
+                {user?.pseudo} <PokerChipIcon value={user?.bank || 0} size={32} />
+              </span>
+              <PixelButton size="sm" onClick={handleLogout}>Logout</PixelButton>
+            </>
+          ) : (
+            <>
+              <Link to="/login">
+                <PixelButton variant="outline" size="sm">Connexion</PixelButton>
+              </Link>
+              <Link to="/register">
+                <PixelButton size="sm">Inscription</PixelButton>
+              </Link>
+            </>
+          )}
         </div>
       </div>
     </nav>
