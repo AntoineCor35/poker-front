@@ -25,10 +25,17 @@ const PixelCard = ({ suit, value, isBack = false, isDealer = false, isSmallBlind
   const suitColor = suitToSymbol(suit) === "♥" || suitToSymbol(suit) === "♦" ? "text-poker-red" : "text-poker-black";
   
   return (
-    <div className={`relative w-20 h-28 bg-gray-50 rounded ${className}`} style={{ minWidth: 60, minHeight: 84 }}>
-      <div className="absolute inset-0 bg-gray-50 border border-black rounded"></div>
+    <div className={`relative w-20 h-28 rounded overflow-hidden ${className}`} style={{ minWidth: 60, minHeight: 64 }}>
+      {!isBack && <div className="absolute inset-0 bg-gray-50 border border-black rounded"></div>}
       {isBack ? (
-        <div className="absolute inset-0 flex items-center justify-center text-2xl text-poker-blue">🂠</div>
+        <div className="absolute inset-0 flex items-center justify-center rounded overflow-hidden">
+          <img
+            src="/img/badfoxlab-badfoxlab-cover-3-sq.gif"
+            alt="Dos de carte"
+            style={{ width: '100%', height: '100%', objectFit: 'cover', imageRendering: 'pixelated' }}
+            draggable={false}
+          />
+        </div>
       ) : (
         <div className={`absolute inset-0 flex flex-col items-center justify-center font-pixel ${suitColor} px-1 py-1`}>
           <div className="text-lg font-bold leading-none">{value}</div>
