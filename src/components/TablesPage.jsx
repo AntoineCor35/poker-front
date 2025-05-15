@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { fetchTables, joinTable } from '../api/tables';
 import { useAuth } from '../auth/context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { useParams } from 'react-router-dom';
-import { getTable } from '../api/tables';
 
 const TablesPage = () => {
   const [tables, setTables] = useState([]);
@@ -69,47 +67,6 @@ const TablesPage = () => {
           </li>
         ))}
       </ul>
-    </div>
-  );
-};
-
-export const TableView = () => {
-  const { id } = useParams();
-  const [table, setTable] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    setLoading(true);
-    getTable(id)
-      .then((data) => {
-        setTable(data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setError(err.message || 'Erreur lors du chargement de la table');
-        setLoading(false);
-      });
-  }, [id]);
-
-  if (loading) return <div>Chargement de la table...</div>;
-  if (error) return <div>Erreur : {error}</div>;
-  if (!table) return <div>Table introuvable</div>;
-
-  return (
-    <div className="p-4 max-w-2xl mx-auto">
-      <h1 className="text-2xl font-bold mb-4 text-white">Table : {table.name}</h1>
-      <div className="text-white mb-2">ID : {table.id}</div>
-      <div className="text-white mb-2">Statut : {table.status}</div>
-      <div className="text-white mb-2">Joueurs ({table.players.length} / {table.maxPlayers}) :</div>
-      <ul className="text-white mb-4">
-        {table.players.map((player) => (
-          <li key={player.id}>{player.name} (Chips : {player.chips})</li>
-        ))}
-      </ul>
-      <div className="text-white mb-2">Blindes : {table.smallBlind} / {table.bigBlind}</div>
-      <div className="text-white mb-2">Pot : {table.pot}</div>
-      {/* Ajoute d'autres infos si besoin */}
     </div>
   );
 };

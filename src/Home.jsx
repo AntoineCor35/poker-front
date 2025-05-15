@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import useAuth from './auth/hooks/useAuth';
 
 // Import pixel art components
-import { PixelButton, PixelContainer, PixelCard, PixelChip, PixelAnimation } from './components/ui';
+import { PixelButton, PixelContainer, PixelCard, PokerChipIcon, PixelAnimation } from './components/ui';
 
 const Home = () => {
   const { isAuthenticated, user } = useAuth();
@@ -35,7 +35,7 @@ const Home = () => {
             <h2 className="text-xl mb-4">Bonjour, {user?.pseudo}!</h2>
             <div className="flex justify-center items-center gap-2 mb-6">
               <span>Votre solde:</span>
-              <PixelChip value={user?.bank || 0} />
+              <PokerChipIcon value={user?.bank || 0} />
             </div>
             <div className="action-buttons flex flex-col sm:flex-row gap-4 justify-center">
               <Link to="/tables">

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { PixelButton, PixelCard, PixelChip, PixelContainer, PixelAnimation } from './ui';
+import { PixelButton, PixelCard, PokerChipIcon, PixelContainer, PixelAnimation } from './ui';
 import useAuth from '../auth/hooks/useAuth';
 
 // Composant pour les icônes chevron
@@ -81,7 +81,7 @@ const LandingPage = () => {
               {isAuthenticated ? (
                 <>
                   <span className="flex items-center gap-2 text-poker-gold">
-                    {user?.pseudo} <PixelChip value={user?.bank || 0} className="w-8 h-8" />
+                    {user?.pseudo} <PokerChipIcon value={user?.bank || 0} size={32} />
                   </span>
                   <Link to="/profile">
                     <PixelButton size="sm">Profil</PixelButton>
@@ -128,7 +128,7 @@ const LandingPage = () => {
                 {isAuthenticated ? (
                   <>
                     <span className="flex items-center gap-2 text-poker-gold">
-                      {user?.pseudo} <PixelChip value={user?.bank || 0} className="w-8 h-8" />
+                      {user?.pseudo} <PokerChipIcon value={user?.bank || 0} size={32} />
                     </span>
                     <Link to="/profile">
                       <PixelButton className="w-full">Profil</PixelButton>
@@ -239,13 +239,13 @@ const LandingPage = () => {
 
                 {/* Chips améliorés et plus visibles */}
                 <div className="absolute" style={{ left: '25%', top: '60%' }}>
-                  <PixelChip value="25" color="!bg-red-600" className="w-14 h-14 drop-shadow-xl text-xl" />
+                  <PokerChipIcon value="25" size={56} className="drop-shadow-xl text-xl" colorClass="text-red-600" />
                 </div>
                 <div className="absolute" style={{ left: '45%', top: '65%' }}>
-                  <PixelChip value="50" color="!bg-blue-600" className="w-14 h-14 drop-shadow-xl text-xl" />
+                  <PokerChipIcon value="50" size={56} className="drop-shadow-xl text-xl" colorClass="text-blue-600" />
                 </div>
                 <div className="absolute" style={{ left: '65%', top: '62%' }}>
-                  <PixelChip value="100" color="bg-poker-gold" className="w-14 h-14 drop-shadow-xl text-xl" />
+                  <PokerChipIcon value="100" size={56} className="drop-shadow-xl text-xl" />
                 </div>
               </div>
             </div>
@@ -342,7 +342,7 @@ const LandingPage = () => {
 
                     <div className="relative h-40 bg-poker-green border-4 border-yellow-800 pixel-borders flex items-center justify-center">
                       <div className="absolute inset-0 flex items-center justify-center">
-                        <PixelChip value="1250" className="w-20 h-20" />
+                        <PokerChipIcon value="1250" size={80} />
                       </div>
 
                       <div className="absolute bottom-4 left-4 flex space-x-2">
