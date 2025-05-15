@@ -12,9 +12,16 @@ const getRoles = (player) => {
   return roles.join(', ');
 };
 
+const getAvatar = (player) => {
+  // On mappe id % 4 sur les 4 images
+  const idx = player.id ? (player.id % 4) + 1 : 1;
+  return `/img/pokerplayer${idx}.png`;
+};
+
 const PlayerCard = ({ player }) => {
   return (
     <div className="bg-black text-white rounded p-4 flex flex-col items-center shadow-md border border-gray-700">
+      <img src={getAvatar(player)} alt="avatar" style={{ maxWidth: 100, maxHeight: 100, objectFit: 'contain' }} className="mb-2 rounded shadow pixel-borders" />
       <div className="font-bold text-lg mb-1">{player.name}</div>
       <PokerChipIcon value={player.chips} size={40} className="mb-1" />
       <div className="text-xs mb-1">Rôles : <span className="font-semibold">{getRoles(player)}</span></div>
