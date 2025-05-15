@@ -14,7 +14,8 @@ import PrivateRoute from './auth/components/PrivateRoute';
 import Navbar from './auth/components/Navbar';
 import Home from './Home'; // Créer ce composant plus tard
 import LandingPage from './components/LandingPage';
-import TablesPage, { TableView } from './components/TablesPage';
+import TablesPage from './components/TablesPage';
+import JoinedTable from './components/JoinedTable';
 
 // Import pixel art components
 import { PixelContainer } from './components/ui';
@@ -41,7 +42,6 @@ function App() {
             {/* Routes publiques */}
             <Route path="/login" element={
               <>
-                {console.log('Rendering Login route')}
                 <Navbar />
                 <PixelContainer className="content max-w-5xl mx-auto mt-8">
                   <Login />
@@ -68,7 +68,7 @@ function App() {
               <>
                 <Navbar />
                 <PixelContainer className="content max-w-5xl mx-auto mt-8">
-                  <TableView />
+                  <JoinedTable />
                 </PixelContainer>
               </>
             } />
