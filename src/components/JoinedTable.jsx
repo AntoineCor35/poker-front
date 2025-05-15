@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { joinTable, getPossibleActions, startGame, playAction } from '../api/tables';
 import TableHeader from './TableHeader';
@@ -6,6 +6,7 @@ import GameLog from './GameLog';
 import PlayersList from './PlayersList';
 import TableInfo from './TableInfo';
 import PlayerAction from './PlayerAction';
+import PixelWinBanner from './PixelWinBanner';
 import PixelCard from './ui/card/PixelCard';
 
 const JoinedTable = () => {
@@ -18,6 +19,9 @@ const JoinedTable = () => {
   const [currentPlayer, setCurrentPlayer] = useState(null);
   const [startLoading, setStartLoading] = useState(false);
   const [actionLoading, setActionLoading] = useState(false);
+  const [showWinBanner, setShowWinBanner] = useState(false);
+  const [winMessage, setWinMessage] = useState('');
+  const lastWinRef = useRef(null);
 
   // Helper pour séparer gameLog du reste
   const extractTableState = (table) => {
@@ -115,6 +119,32 @@ const JoinedTable = () => {
     }
   };
 
+  // Détection victoire/fin de round dans le gameLog
+  useEffect(() => {
+    if (!gameLog || gameLog.length === 0) return;
+    // On cherche la dernière entrée de type 'round' avec 'win' ou 'ended' dans le message
+    const last = [...gameLog].reverse().find(entry =>
+      entry.type === 'round' && (
+        entry.message.toLowerCase().includes('win') ||
+        entry.message.toLowerCase().includes('ended')
+      )
+    );
+    if (last && last.timestamp !== lastWinRef.current) {
+      // On extrait le nom du gagnant si possible
+      let msg = 'Round terminé !';
+      if (last.message.toLowerCase().includes('win')) {
+        // Ex: 'Round 1 ended. Antoine wins with ...'
+        const match = last.message.match(/([\w\d]+) wins/i);
+        if (match) msg = `Victoire de ${match[1]} !`;
+        else msg = 'Victoire !';
+      }
+      setWinMessage(msg);
+      setShowWinBanner(true);
+      lastWinRef.current = last.timestamp;
+      setTimeout(() => setShowWinBanner(false), 3000);
+    }
+  }, [gameLog]);
+
   if (loading) return <div>Chargement de la table...</div>;
   if (error) return <div>Erreur : {error}</div>;
   if (!tableData) return null;
@@ -131,6 +161,7 @@ const JoinedTable = () => {
       />
       <PlayersList players={tableData.players} />
       <TableInfo pot={tableData.pot} river={tableData.river} />
+      {showWinBanner && <PixelWinBanner message={winMessage} />}
       <PlayerAction actions={actions} onAction={handlePlayerAction} loading={actionLoading} />
       <GameLog log={gameLog} />
       {tableData.status === 'Waiting' && (
