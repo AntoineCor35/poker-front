@@ -4,6 +4,8 @@ import { joinTable, getPossibleActions, startGame } from '../api/tables';
 import TableHeader from './TableHeader';
 import GameLog from './GameLog';
 import PlayersList from './PlayersList';
+import TableInfo from './TableInfo';
+import PixelCard from './ui/card/PixelCard';
 
 const JoinedTable = () => {
   const { id } = useParams();
@@ -107,6 +109,7 @@ const JoinedTable = () => {
         bigBlind={tableData.bigBlind}
       />
       <PlayersList players={tableData.players} />
+      <TableInfo pot={tableData.pot} river={tableData.river} />
       <GameLog log={gameLog} />
       {tableData.status === 'Waiting' && (
         <button 
