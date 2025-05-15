@@ -570,21 +570,6 @@ const LandingPage = () => {
           <div className="border-t-4 border-black pixel-borders mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
             <p className="text-gray-400 text-sm">© 2025 PIXELPOKER. TOUS DROITS RÉSERVÉS.</p>
             <div className="flex space-x-6 mt-4 md:mt-0">
-              <a href="#" className="text-gray-400 hover:text-poker-gold transition-colors">
-                <div className="w-8 h-8 bg-poker-green-dark border-2 border-gray-400 pixel-borders flex items-center justify-center">
-                  F
-                </div>
-              </a>
-              <a href="#" className="text-gray-400 hover:text-poker-gold transition-colors">
-                <div className="w-8 h-8 bg-poker-green-dark border-2 border-gray-400 pixel-borders flex items-center justify-center">
-                  T
-                </div>
-              </a>
-              <a href="#" className="text-gray-400 hover:text-poker-gold transition-colors">
-                <div className="w-8 h-8 bg-poker-green-dark border-2 border-gray-400 pixel-borders flex items-center justify-center">
-                  I
-                </div>
-              </a>
             </div>
           </div>
         </div>
