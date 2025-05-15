@@ -1,30 +1,46 @@
 import React from 'react';
 
 /**
- * Pixel art style poker chip component
- * @param {Object} props - Component props
+ * Poker chip SVG icon (outline, Tabler Icons)
+ * @param {Object} props
  * @param {string|number} props.value - Chip value
- * @param {string} props.color - Background color class for the chip
  * @param {string} props.className - Additional CSS classes
+ * @param {number} props.size - Chip diameter in px (default: 48)
+ * @param {string} props.colorClass - Tailwind text color class (default: text-poker-gold)
  */
-const PixelChip = ({ value, color = "bg-poker-gold", className = '' }) => (
-  <div className={`relative w-12 h-12 ${className}`}>
-    {/* Cercle principal */}
-    <div className={`absolute inset-0 ${color} rounded-full`}></div>
-    
-    {/* Anneau pixelisé extérieur */}
-    <div className="absolute inset-[10%] flex items-center justify-center">
-      <div className="absolute inset-0 w-full h-full border-[3px] border-dashed border-white opacity-40 rounded-full"></div>
-    </div>
-    
-    {/* Cercle blanc central */}
-    <div className="absolute inset-[25%] bg-white rounded-full border border-black"></div>
-    
-    {/* Valeur du jeton */}
-    <div className="absolute inset-0 flex items-center justify-center font-pixel text-poker-black font-bold">
+const PokerChipIcon = ({ value, className = '', size = 48, colorClass = 'text-poker-gold' }) => (
+  <div className={`flex items-center gap-2 ${className}`} style={{ minHeight: size }}>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={colorClass}
+      style={{ display: 'block' }}
+    >
+      <circle cx="12" cy="12" r="9" />
+      <circle cx="12" cy="12" r="5" />
+      <line x1="12" y1="3" x2="12" y2="7" />
+      <line x1="12" y1="17" x2="12" y2="21" />
+      <line x1="3" y1="12" x2="7" y2="12" />
+      <line x1="17" y1="12" x2="21" y2="12" />
+      <line x1="18.364" y1="5.636" x2="15.536" y2="8.464" />
+      <line x1="8.464" y1="15.536" x2="5.636" y2="18.364" />
+      <line x1="5.636" y1="5.636" x2="8.464" y2="8.464" />
+      <line x1="15.536" y1="15.536" x2="18.364" y2="18.364" />
+    </svg>
+    <span
+      className="font-pixel text-white drop-shadow-sm"
+      style={{ fontSize: Math.round(size * 0.38), lineHeight: 1 }}
+    >
       {value}
-    </div>
+    </span>
   </div>
 );
 
-export default PixelChip; 
+export default PokerChipIcon; 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { PixelCard, PixelChip } from './ui';
+import { PixelCard, PokerChipIcon } from './ui';
 
 const getRoles = (player) => {
   const roles = [];
@@ -16,7 +16,7 @@ const PlayerCard = ({ player }) => {
   return (
     <div className="bg-black text-white rounded p-4 flex flex-col items-center shadow-md border border-gray-700">
       <div className="font-bold text-lg mb-1">{player.name}</div>
-      <PixelChip value={player.chips} className="w-10 h-10 mb-1" />
+      <PokerChipIcon value={player.chips} size={40} className="mb-1" />
       <div className="text-xs mb-1">Rôles : <span className="font-semibold">{getRoles(player)}</span></div>
       <div className="text-sm mb-1">Mise actuelle : <span className="font-bold">{player.currentBet}</span></div>
       <div className="flex gap-1 mb-1">

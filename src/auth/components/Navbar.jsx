@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
-import { PixelButton, PixelChip } from '../../components/ui';
+import { PixelButton, PokerChipIcon } from '../../components/ui';
 
 /**
  * Barre de navigation qui affiche différents liens selon l'état d'authentification
@@ -36,7 +36,7 @@ const Navbar = () => {
               <div className="flex items-center gap-4">
                 <div className="flex items-center gap-2">
                   <span className="text-white">{user?.pseudo}</span>
-                  <PixelChip value={user?.bank || 0} className="w-8 h-8" />
+                  <PokerChipIcon value={user?.bank || 0} size={32} />
                 </div>
                 <PixelButton 
                   onClick={handleLogout} 
