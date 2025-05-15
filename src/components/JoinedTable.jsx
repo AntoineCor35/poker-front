@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { joinTable, getPossibleActions, startGame } from '../api/tables';
+import { joinTable, getPossibleActions, startGame, playAction } from '../api/tables';
 import TableHeader from './TableHeader';
 import GameLog from './GameLog';
 import PlayersList from './PlayersList';
 import TableInfo from './TableInfo';
+import PlayerAction from './PlayerAction';
 import PixelCard from './ui/card/PixelCard';
 
 const JoinedTable = () => {
@@ -16,6 +17,7 @@ const JoinedTable = () => {
   const [actions, setActions] = useState(null);
   const [currentPlayer, setCurrentPlayer] = useState(null);
   const [startLoading, setStartLoading] = useState(false);
+  const [actionLoading, setActionLoading] = useState(false);
 
   // Helper pour séparer gameLog du reste
   const extractTableState = (table) => {
@@ -91,8 +93,27 @@ const JoinedTable = () => {
     }
   };
 
-  console.log(gameLog);
-  console.log(tableData);
+  // Handler pour une action joueur
+  const handlePlayerAction = async (action, amount) => {
+    setActionLoading(true);
+    setError(null);
+    try {
+      const res = await playAction(id, action, amount);
+      if (res.success && res.table) {
+        const { tableWithoutLog, gameLog } = extractTableState(res.table);
+        setTableData(tableWithoutLog);
+        setGameLog(gameLog);
+        setActions(res.possibleActions || null);
+        setCurrentPlayer(res.currentPlayer || null);
+      } else {
+        setError(res.error || 'Erreur lors de l\'action');
+      }
+    } catch (err) {
+      setError(err.message || 'Erreur lors de l\'action');
+    } finally {
+      setActionLoading(false);
+    }
+  };
 
   if (loading) return <div>Chargement de la table...</div>;
   if (error) return <div>Erreur : {error}</div>;
@@ -110,6 +131,7 @@ const JoinedTable = () => {
       />
       <PlayersList players={tableData.players} />
       <TableInfo pot={tableData.pot} river={tableData.river} />
+      <PlayerAction actions={actions} onAction={handlePlayerAction} loading={actionLoading} />
       <GameLog log={gameLog} />
       {tableData.status === 'Waiting' && (
         <button 
@@ -120,7 +142,6 @@ const JoinedTable = () => {
           {startLoading ? 'Démarrage...' : 'Commencer la partie'}
         </button>
       )}
-      {/* Ici tu pourras passer gameLog, actions, currentPlayer à d'autres composants */}
     </div>
   );
 };
