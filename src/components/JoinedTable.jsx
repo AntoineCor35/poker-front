@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { joinTable, getPossibleActions, startGame } from '../api/tables';
 import TableHeader from './TableHeader';
 import GameLog from './GameLog';
+import PlayersList from './PlayersList';
 
 const JoinedTable = () => {
   const { id } = useParams();
@@ -105,6 +106,7 @@ const JoinedTable = () => {
         smallBlind={tableData.smallBlind}
         bigBlind={tableData.bigBlind}
       />
+      <PlayersList players={tableData.players} />
       <GameLog log={gameLog} />
       {tableData.status === 'Waiting' && (
         <button 
